@@ -6,10 +6,10 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      # Все заголовки от клиента (в т.ч. X-User-Id) проксируются автоматически.
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       routes:
-
         - id: payments-health
           uri: http://payments-service:8081
           predicates:

@@ -1,0 +1,1 @@
+{"uuid":"68c382d8-2b22-4adb-acbb-ad77684ccea6","name":"createOrder: zero price → InvalidPriceException (service-level safety net)","children":["40dd815e-e133-4dc5-81e8-5edd8699710f"],"befores":[],"afters":[],"start":1783716740821,"stop":1783716740829}

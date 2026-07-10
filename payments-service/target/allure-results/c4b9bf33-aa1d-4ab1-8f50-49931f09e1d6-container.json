@@ -1,0 +1,1 @@
+{"uuid":"c4b9bf33-aa1d-4ab1-8f50-49931f09e1d6","name":"createAccount: concurrent duplicate insert → catches UNIQUE violation, returns winner's account","children":["eae7721c-6a79-4ca8-ad96-23c2e4c0859d"],"befores":[],"afters":[],"start":1783717095846,"stop":1783717095856}

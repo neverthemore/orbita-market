@@ -1,0 +1,1 @@
+{"uuid":"a2a99510-91c6-421e-9e88-a94c2c646eec","name":"createOrder ARCHIVE: valid request → PAYMENT_PENDING + outbox event saved","children":["02655c9a-2ad6-4619-af38-9188eddead2c"],"befores":[],"afters":[],"start":1783716740885,"stop":1783716740904}

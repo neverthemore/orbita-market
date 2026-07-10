@@ -39,7 +39,6 @@ management:
       exposure:
         include: health,info
 
-# Kafka topic names — must match Payments Service configuration
 orbita:
   kafka:
     topics:

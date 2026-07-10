@@ -1,5 +1,4 @@
--- Orders Service Schema
--- Migration V1: Initial schema
+
 
 CREATE TABLE IF NOT EXISTS orders (
     id              UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -16,8 +15,6 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders (user_id);
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders (status);
 
--- Transactional Outbox: events published atomically with the order.
--- OutboxPoller reads unsent rows and publishes to Kafka.
 CREATE TABLE IF NOT EXISTS outbox_events (
     id            UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
     event_id      UUID         NOT NULL UNIQUE,
@@ -33,7 +30,6 @@ CREATE TABLE IF NOT EXISTS outbox_events (
 CREATE INDEX IF NOT EXISTS idx_outbox_sent ON outbox_events (sent, created_at)
     WHERE sent = false;
 
--- Inbox for payment result events — prevents duplicate status updates.
 CREATE TABLE IF NOT EXISTS payment_result_inbox (
     event_id    UUID         PRIMARY KEY,
     order_id    UUID         NOT NULL,

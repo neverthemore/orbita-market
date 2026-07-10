@@ -1,0 +1,1 @@
+{"uuid":"ae93748a-a7fb-4b7a-89c1-83a176b8c76b","name":"POST /orders with price=0 → 400 (bean validation @Positive)","children":["d5c7015b-56f4-4d92-b436-4ccfb5ad806c"],"befores":[],"afters":[],"start":1783717104841,"stop":1783717104856}

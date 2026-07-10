@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-/** Received from Payments Service: debit failed. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

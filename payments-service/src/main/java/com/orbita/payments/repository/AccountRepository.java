@@ -16,11 +16,7 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
 
     boolean existsByUserId(String userId);
 
-    /**
-     * SELECT ... FOR UPDATE — used during payment processing to prevent
-     * concurrent threads from reading a stale balance.
-     * Combined with @Version this gives us two layers of concurrency protection.
-     */
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT a FROM Account a WHERE a.userId = :userId")
     Optional<Account> findByUserIdWithLock(@Param("userId") String userId);

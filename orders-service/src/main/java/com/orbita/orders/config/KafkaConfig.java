@@ -15,17 +15,7 @@ import org.springframework.kafka.listener.ContainerProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Orders Service Kafka configuration.
- *
- * Design decisions:
- *   - Producer: String key + String value  → OutboxPoller writes raw JSON strings;
- *     no extra serializer needed — outbox payload IS already a JSON string.
- *   - Consumer: String key + String value  → avoids JsonDeserializer<Object>
- *     ambiguity (which deserialises to LinkedHashMap, not a typed event).
- *     PaymentResultConsumer deserialises manually with ObjectMapper → full
- *     control over target type and proper error messages.
- */
+
 @EnableKafka
 @Configuration
 public class KafkaConfig {
@@ -71,12 +61,7 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, String> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(stringConsumerFactory());
-        // Manual ACK — we acknowledge only after successful DB update.
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
-        // Match the topics' partition count for parallel throughput. Safe here
-        // (unlike a naive parallel debit) because each event only ever touches
-        // its own order row (keyed by orderId), so there's no cross-event
-        // contention to guard against.
         factory.setConcurrency(3);
         return factory;
     }

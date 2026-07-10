@@ -8,11 +8,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Transactional Inbox for incoming OrderPaymentRequested events.
- * Guarantees effectively-exactly-once debit: if the same event_id arrives
- * a second time, the UNIQUE constraint fires and we skip processing.
- */
+
 @Entity
 @Table(name = "payment_inbox")
 @Getter
@@ -20,7 +16,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PaymentInboxEntry {
 
-    /** Same value as event_id in the Kafka message — our idempotency key. */
     @Id
     private UUID eventId;
 
@@ -30,7 +25,6 @@ public class PaymentInboxEntry {
     @Column(name = "user_id", nullable = false)
     private String userId;
 
-    /** PROCESSING | COMPLETED | FAILED */
     @Column(nullable = false)
     private String status;
 

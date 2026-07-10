@@ -23,10 +23,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    /**
-     * POST /orders/orders — create order and trigger async payment.
-     * Returns PAYMENT_PENDING immediately; poll GET /orders/{id} for final status.
-     */
+
     @PostMapping("/orders")
     @Description("Create a satellite product order")
     public ResponseEntity<OrderResponse> createOrder(
@@ -37,9 +34,6 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(OrderResponse.of(order));
     }
 
-    /**
-     * GET /orders/orders — list all orders for the current user.
-     */
     @GetMapping("/orders")
     @Description("List all orders for the authenticated user")
     public ResponseEntity<List<OrderResponse>> listOrders(
@@ -51,9 +45,6 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
-    /**
-     * GET /orders/orders/{order_id} — get order details and current status.
-     */
     @GetMapping("/orders/{orderId}")
     @Description("Get order details and payment status")
     public ResponseEntity<OrderResponse> getOrder(

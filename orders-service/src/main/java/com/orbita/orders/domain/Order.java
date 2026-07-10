@@ -34,16 +34,9 @@ public class Order {
     @Column(nullable = false)
     private OrderStatus status;
 
-    /**
-     * Product-specific parameters stored as JSON text.
-     * ARCHIVE: aoi, capture_date, sensor_type.
-     * TASKING:  aoi, time_window, sensor_type.
-     * MONITORING: aoi, cadence, duration_days.
-     */
     @Column(columnDefinition = "TEXT", nullable = false)
     private String payload;
 
-    /** Filled for PAYMENT_FAILED and REJECTED statuses. */
     @Column(name = "failure_reason")
     private String failureReason;
 

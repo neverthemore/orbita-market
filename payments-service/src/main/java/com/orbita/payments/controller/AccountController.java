@@ -23,10 +23,6 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    /**
-     * POST /payments/accounts — create account for user.
-     * Idempotent: returns 201 if a new account was created, 200 if it already existed.
-     */
     @PostMapping("/accounts")
     @Description("Create geocredit account for user")
     public ResponseEntity<AccountResponse> createAccount(

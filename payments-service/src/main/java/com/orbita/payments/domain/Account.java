@@ -8,11 +8,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Wallet (account) for a user. Holds geocredits balance.
- * @Version ensures optimistic locking — concurrent updates
- * will get OptimisticLockingFailureException rather than silently overwriting each other.
- */
+
 @Entity
 @Table(name = "accounts")
 @Getter
@@ -30,7 +26,6 @@ public class Account {
     @Column(nullable = false)
     private Long balance = 0L;
 
-    /** Optimistic lock version — prevents lost-update anomaly. */
     @Version
     @Column(nullable = false)
     private Long version;

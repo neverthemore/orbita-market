@@ -6,17 +6,10 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      # Все заголовки от клиента (в т.ч. X-User-Id) проксируются автоматически.
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       routes:
-        # ── Health-check pass-through ──────────────────────────────────────
-        # Actuator lives at service-root (/actuator/health), NOT under
-        # /api/v1/payments/. These MUST be defined before the general
-        # /payments/** and /orders/** routes below: Gateway matches routes
-        # in definition order and stops at the first match, so without this
-        # ordering the general rule would shadow these and prefix
-        # /actuator/health with /api/v1/payments/, producing a 404.
+
         - id: payments-health
           uri: http://payments-service:8081
           predicates:
@@ -31,8 +24,6 @@ spring:
           filters:
             - RewritePath=/orders/actuator/(?<remaining>.*), /actuator/${remaining}
 
-        # ── General API routes ─────────────────────────────────────────────
-        # /payments/** → Payments Service /api/v1/payments/**
         - id: payments-service
           uri: http://payments-service:8081
           predicates:
@@ -40,7 +31,6 @@ spring:
           filters:
             - RewritePath=/payments/(?<remaining>.*), /api/v1/payments/${remaining}
 
-        # /orders/** → Orders Service /api/v1/orders/**
         - id: orders-service
           uri: http://orders-service:8082
           predicates:

@@ -14,15 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-/**
- * Core account/billing logic.
- *
- * IMPORTANT: processPaymentRequest() performs ONLY DB work and returns a
- * PaymentResult. Kafka publishing is intentionally NOT done here — it must
- * happen AFTER the transaction commits (in PaymentEventConsumer) to prevent
- * Orders from receiving the completion event before the debit is visible in
- * payments_db.
- */
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -33,19 +25,7 @@ public class AccountService {
 
     // ─── HTTP endpoints ───────────────────────────────────────────────────
 
-    /**
-     * Idempotent create-or-get.
-     *
-     * Fast path: an existing account is found and returned as-is.
-     *
-     * Race handling: if two requests for the same new userId arrive
-     * concurrently, both may pass the findByUserId() check and both attempt
-     * save(). The accounts.user_id UNIQUE constraint lets exactly one INSERT
-     * succeed; the other raises DataIntegrityViolationException, which we
-     * catch and resolve by re-fetching the winner's row. This is what makes
-     * the operation genuinely idempotent under concurrency — both callers
-     * get a successful, consistent result instead of one of them failing.
-     */
+
     @Transactional
     public AccountCreationResult createAccount(String userId) {
         return accountRepository.findByUserId(userId)
@@ -81,16 +61,7 @@ public class AccountService {
 
     // ─── Kafka consumer support ───────────────────────────────────────────
 
-    /**
-     * Idempotently debit the balance for an order.
-     * Returns a {@link PaymentResult} describing what happened.
-     * The caller (PaymentEventConsumer) is responsible for publishing the
-     * corresponding Kafka event AFTER this method returns (i.e., after commit).
-     *
-     * Inbox pattern: the unique constraint on payment_inbox.event_id ensures
-     * that even if the same Kafka message is delivered multiple times, the
-     * debit is applied at most once.
-     */
+
     @Transactional
     public PaymentResult processPaymentRequest(OrderPaymentRequestedEvent event) {
         log.info("Processing payment orderId={} userId={} amount={}",

@@ -1,0 +1,23 @@
+@startuml C1-SystemContext
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title System Context — OrbitaMarket
+
+LAYOUT_WITH_LEGEND()
+
+Person(operator, "Оператор ДЗЗ", "Заказывает архивные снимки и задания (tasking)")
+Person(analyst,  "Аналитик",     "Покупает архивы, подписки на мониторинг территории")
+Person(admin,    "Администратор","Пополняет счета, смотрит статистику")
+
+System(orbita, "OrbitaMarket", "Платформа заказов спутниковых продуктов.\nПриём заказов, биллинг в геокредитах.")
+
+System_Ext(satellite, "Спутниковая система", "Реальная съёмка (за рамками MVP)")
+System_Ext(bank,      "Платёжный шлюз",      "Внешняя оплата (за рамками MVP)")
+
+Rel(operator, orbita, "Создаёт заказы ARCHIVE / TASKING", "HTTPS")
+Rel(analyst,  orbita, "Создаёт заказы MONITORING",        "HTTPS")
+Rel(admin,    orbita, "Пополняет счёт, просматривает баланс", "HTTPS")
+Rel(orbita,   satellite, "Инициирует съёмку (future)",    "API")
+Rel(admin,    bank,   "Переводит фиатные деньги (future)","API")
+
+@enduml

@@ -1,0 +1,15 @@
+# .gitleaksignore
+# Format: one rule per line → <SHA of offending commit>:<file>:<line>
+# These are dev-only placeholder values, NOT real secrets.
+# Real credentials are injected via environment variables at runtime (see docker-compose.yml).
+#
+# To regenerate this list after re-scanning, run:
+#   gitleaks detect --source . --report-format json --report-path /tmp/gl.json
+#   cat /tmp/gl.json | jq -r '.[] | "\(.Commit):\(.File):\(.StartLine)"' >> .gitleaksignore
+
+# payments-service: DB_PASS placeholder "orbita" in application.yml
+# (overridden in production by DB_PASS env-var, never a real credential)
+:payments-service/src/main/resources/application.yml:16
+
+# orders-service: DB_PASS placeholder "orbita" in application.yml
+:orders-service/src/main/resources/application.yml:16

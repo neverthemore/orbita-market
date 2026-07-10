@@ -1,0 +1,43 @@
+@startuml C2-Containers
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Container Diagram — OrbitaMarket
+
+LAYOUT_WITH_LEGEND()
+
+Person(user, "Клиент", "Оператор ДЗЗ / Аналитик / Администратор")
+
+System_Boundary(orbita, "OrbitaMarket") {
+
+    Container(gateway, "API Gateway", "Spring Cloud Gateway / Java 17",
+        "Единая точка входа. Маршрутизирует запросы, пробрасывает X-User-Id.\nНе хранит бизнес-состояния.")
+
+    Container(orders, "Orders Service", "Spring Boot 3 / Java 17",
+        "Создаёт и управляет заказами ARCHIVE / TASKING / MONITORING.\nПубликует OrderPaymentRequested через Transactional Outbox.\nПотребляет результаты оплаты.")
+
+    Container(payments, "Payments Service", "Spring Boot 3 / Java 17",
+        "Управляет счетами и балансом геокредитов.\nПотребляет команды на списание, идемпотентно дебетует баланс.\nПубликует результаты оплаты.")
+
+    ContainerDb(orders_db, "Orders DB", "PostgreSQL 16",
+        "orders, outbox_events, payment_result_inbox.\nИзолированная база, нет общих таблиц.")
+
+    ContainerDb(payments_db, "Payments DB", "PostgreSQL 16",
+        "accounts, payment_inbox.\nОтдельная БД, нет общих таблиц.")
+
+    Container(broker, "Message Broker", "Apache Kafka 3.7 (KRaft)",
+        "Топики:\n• order-payment-requested  (Orders → Payments)\n• order-payment-completed  (Payments → Orders)\n• order-payment-failed     (Payments → Orders)")
+}
+
+Rel(user,     gateway,   "REST / HTTPS", "HTTP/S :8080")
+Rel(gateway,  orders,    "/orders/**",   "HTTP :8082")
+Rel(gateway,  payments,  "/payments/**", "HTTP :8081")
+
+Rel(orders,   orders_db, "JPA / Flyway", "JDBC")
+Rel(payments, payments_db,"JPA / Flyway","JDBC")
+
+Rel(orders,   broker, "Outbox Poller → publish OrderPaymentRequested", "Kafka")
+Rel(broker,   payments,"consume OrderPaymentRequested",                "Kafka")
+Rel(payments, broker, "publish OrderPaymentCompleted / Failed",        "Kafka")
+Rel(broker,   orders, "consume payment results",                       "Kafka")
+
+@enduml

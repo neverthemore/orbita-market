@@ -1,0 +1,49 @@
+server:
+  port: 8081
+
+spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+  application:
+    name: payments-service
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/payments_db
+    username: ${DB_USER:orbita}
+    password: ${DB_PASS:orbita}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+    consumer:
+      group-id: payments-consumer-group
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+# Kafka topic names — must match Orders Service configuration
+orbita:
+  kafka:
+    topics:
+      payment-requested: order-payment-requested
+      payment-completed: order-payment-completed
+      payment-failed: order-payment-failed

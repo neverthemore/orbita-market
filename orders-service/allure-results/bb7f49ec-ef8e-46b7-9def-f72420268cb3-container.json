@@ -1,0 +1,1 @@
+{"uuid":"bb7f49ec-ef8e-46b7-9def-f72420268cb3","name":"POST /orders with blank product_type → 400 (bean validation @NotBlank)","children":["dcc688e1-a3dc-4954-9749-399a58b9b173"],"befores":[],"afters":[],"start":1783711534825,"stop":1783711534833}

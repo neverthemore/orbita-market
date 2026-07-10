@@ -1,0 +1,21 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+  datasource:
+    url: jdbc:h2:mem:orders_test;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
+
+orbita:
+  kafka:
+    topics:
+      payment-requested: order-payment-requested
+      payment-completed: order-payment-completed
+      payment-failed: order-payment-failed
+  outbox:
+    poll-interval-ms: 60000

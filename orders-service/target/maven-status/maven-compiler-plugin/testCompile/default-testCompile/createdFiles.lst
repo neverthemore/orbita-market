@@ -1,0 +1,3 @@
+com\orbita\orders\service\OrderServiceTest.class
+com\orbita\orders\controller\OrderControllerTest.class
+com\orbita\orders\kafka\OutboxPollerTest.class

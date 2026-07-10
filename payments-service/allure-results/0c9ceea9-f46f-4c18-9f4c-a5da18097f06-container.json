@@ -1,0 +1,1 @@
+{"uuid":"0c9ceea9-f46f-4c18-9f4c-a5da18097f06","name":"POST /accounts without X-User-Id → 400 MISSING_USER_ID","children":["95858096-2506-4506-b4e2-ad58c53c363a"],"befores":[],"afters":[],"start":1783711801357,"stop":1783711801364}

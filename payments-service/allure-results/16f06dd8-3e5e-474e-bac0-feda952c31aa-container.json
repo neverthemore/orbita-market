@@ -1,0 +1,1 @@
+{"uuid":"16f06dd8-3e5e-474e-bac0-feda952c31aa","name":"GET /accounts/balance without X-User-Id → 400","children":["ad912e71-fe75-4d3e-9fb9-3d2a02bdf26e"],"befores":[],"afters":[],"start":1783710875022,"stop":1783710875030}

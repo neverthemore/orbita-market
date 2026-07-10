@@ -137,7 +137,8 @@ class AccountServiceTest {
         assertThat(result.amount()).isEqualTo(120L);
         assertThat(account.getBalance()).isEqualTo(880L);
 
-        // Kafka must NOT be called from the service layer
+        verify(inboxRepository).save(any());
+
         verifyNoMoreInteractions(/* no producer mock */ accountRepository, inboxRepository);
     }
 

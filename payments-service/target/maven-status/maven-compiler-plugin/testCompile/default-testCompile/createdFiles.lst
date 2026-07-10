@@ -1,0 +1,3 @@
+com\orbita\payments\controller\AccountControllerTest.class
+com\orbita\payments\kafka\PaymentEventConsumerTest.class
+com\orbita\payments\service\AccountServiceTest.class

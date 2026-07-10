@@ -2,14 +2,7 @@ package com.orbita.payments.service;
 
 import java.util.UUID;
 
-/**
- * Result of payment processing — returned by AccountService.processPaymentRequest().
- * Used by PaymentEventConsumer to publish Kafka events AFTER the DB transaction commits.
- *
- * This is the key architectural fix: Kafka events must be published OUTSIDE the
- * @Transactional boundary to avoid a race condition where the consumer in Orders
- * receives OrderPaymentCompleted before the debit is committed to payments_db.
- */
+
 public record PaymentResult(
         ResultType type,
         UUID orderId,

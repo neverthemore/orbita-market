@@ -11,21 +11,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
-/**
- * Kafka consumer for OrderPaymentRequested events.
- *
- * Orchestration order (critical for correctness):
- *  1. accountService.processPaymentRequest() — all DB work, runs in @Transactional.
- *     Returns a PaymentResult WITHOUT publishing to Kafka.
- *  2. Transaction commits (method returns).
- *  3. eventProducer.publish*() — Kafka publish happens AFTER commit.
- *     This ensures Orders cannot receive OrderPaymentCompleted before the
- *     debit is visible in payments_db.
- *  4. ack.acknowledge() — commit Kafka offset only after full success.
- *
- * If step 3 or 4 fails the service will restart from step 1 on redelivery;
- * the inbox idempotency guard in AccountService prevents double-debit.
- */
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -60,13 +46,12 @@ public class PaymentEventConsumer {
                                 result.orderId(), result.userId(), result.reason()));
             }
 
-            // Step 4: Acknowledge Kafka offset
+
             ack.acknowledge();
 
         } catch (Exception ex) {
             log.error("Failed to process OrderPaymentRequested orderId={}: {}",
                     event.getOrderId(), ex.getMessage(), ex);
-            // Do NOT ack — Kafka will redeliver; inbox prevents double-processing.
             throw ex;
         }
     }

@@ -6,10 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 
-/**
- * Pre-creates Kafka topics on startup.
- * (Kafka also auto-creates them, but explicit creation ensures correct partition count.)
- */
+
 @Configuration
 public class KafkaTopicConfig {
 

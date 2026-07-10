@@ -8,12 +8,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Inbox for payment result events coming from Payments Service.
- * Guards against duplicate OrderPaymentCompleted / OrderPaymentFailed deliveries:
- * if the same event_id arrives twice, the UNIQUE constraint rejects the insert
- * and the listener skips processing.
- */
 @Entity
 @Table(name = "payment_result_inbox")
 @Getter

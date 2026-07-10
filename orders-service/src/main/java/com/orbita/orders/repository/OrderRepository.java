@@ -12,7 +12,6 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
 
     List<Order> findByUserIdOrderByCreatedAtDesc(String userId);
 
-    /** Owners-only lookup: order must belong to the requesting user. */
     Optional<Order> findByIdAndUserId(UUID id, String userId);
 
     List<Order> findByStatus(OrderStatus status);

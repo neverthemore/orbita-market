@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 import java.util.UUID;
 
-/**
- * Published by Orders Service → consumed by Payments Service.
- * Stored in outbox table and relayed by OutboxPoller.
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

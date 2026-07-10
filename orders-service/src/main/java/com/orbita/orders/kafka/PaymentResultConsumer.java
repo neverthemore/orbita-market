@@ -10,16 +10,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
-/**
- * Consumes payment result events from Payments Service.
- *
- * Both listeners receive raw JSON strings (because the producer in Payments
- * uses JsonSerializer, and our consumer factory uses StringDeserializer).
- * We deserialise manually with ObjectMapper to get a strongly-typed event
- * and avoid the JsonDeserializer<Object> → LinkedHashMap ambiguity.
- *
- * Inbox pattern inside OrderService prevents duplicate status transitions.
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor

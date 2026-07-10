@@ -50,12 +50,10 @@ class OrderServiceTest {
 
     @BeforeEach
     void setUp() {
-        // paymentRequestedTopic is @Value-injected — no setter exists, so
-        // ReflectionTestUtils is the correct tool here (unlike Order fields below).
+
         ReflectionTestUtils.setField(orderService, "paymentRequestedTopic", "order-payment-requested");
     }
 
-    // ─── createOrder — happy paths per product type ───────────────────────
 
     @Test
     @DisplayName("createOrder ARCHIVE: valid request → PAYMENT_PENDING + outbox event saved")

@@ -88,7 +88,6 @@ class OutboxPollerTest {
         when(kafkaTemplate.send(anyString(), anyString(), anyString()))
                 .thenReturn(CompletableFuture.failedFuture(new RuntimeException("Kafka down")));
 
-        // Should NOT throw — errors are caught, event left unsent for retry
         outboxPoller.poll();
 
         assertThat(event.getSent()).isFalse();
